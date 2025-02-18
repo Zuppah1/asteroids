@@ -1,3 +1,4 @@
+import sys
 import pygame
 from constants import *
 from player import Player
@@ -9,6 +10,7 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -27,10 +29,18 @@ def main():
             if event.type == pygame.QUIT:
                 return
 
-        screen.fill("black")
         updatable.update(dt)
+
+        for obj in asteroids:
+            if player.collision(obj) == True:
+                print("Game over!")
+                sys.exit()
+
+        screen.fill("black")
+
         for entity in drawable:
             entity.draw(screen)
+
         pygame.display.flip()
 
         # limit FPS to 60
